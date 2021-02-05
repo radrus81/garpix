@@ -17,11 +17,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const AddEditModal = ({ isOpenAddEditModal, typeInfo, closeAddEditModal }) => {
+const AddEditModal = ({
+  isOpenAddEditModal,
+  typeInfo,
+  closeAddEditModal,
+  addNewBook,
+}) => {
   const classes = useStyles()
 
   const onSubmit = (dataForm) => {
-    console.log(dataForm)
+    addNewBook(typeInfo, dataForm)
   }
   return (
     <div>
@@ -37,7 +42,7 @@ const AddEditModal = ({ isOpenAddEditModal, typeInfo, closeAddEditModal }) => {
         }}
       >
         <Fade in={isOpenAddEditModal}>
-          {typeInfo === 'addBook' ? (
+          {typeInfo === 'addBook' || typeInfo === 'editBook' ? (
             <BookFormWithRedux
               typeInfo={typeInfo}
               closeAddEditModal={closeAddEditModal}

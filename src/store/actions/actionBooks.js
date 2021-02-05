@@ -1,25 +1,77 @@
-import axios from 'axios'
-//import { showShackbars } from './actionSnackbarsInfo'
-import { SET_DATA_FROM_BASE } from './actionTypes'
+import axios from '../../axios/request'
+import { showShackbars } from './actionSnackbarsInfo'
+import { SET_BOOKS, SET_NEW_BOOK, SET_DATA_FOR_EDIT_BOOK } from './actionTypes'
+import { openModal, closeAddEditModal } from './actionModal'
 
-// import { formatDateYMDFromDate } from './helpers'
-
-export function getListBooks() {
+export function loadBooks() {
   return async (dispatch) => {
     try {
-      const response = await axios.get(
-        `https://https://garpix-3d691-default-rtdb.firebaseio.com/books.json`
-      )
-      dispatch(setDataFromBaseToState(response.data))
+      const { data } = await axios.get(`/books.json`)
+      let books = []
+      if (data) {
+        books = Object.keys(data).map((id) => ({ ...data[id], id }))
+      }
+      dispatch(setBooksToState(books))
     } catch (error) {
-      //dispatch(showShackbars(error, 'error'))
+      dispatch(showShackbars(error, 'error'))
     }
   }
 }
 
-const setDataFromBaseToState = (dataFromBase) => {
+const setBooksToState = (books) => {
   return {
-    type: SET_DATA_FROM_BASE,
-    dataFromBase,
+    type: SET_BOOKS,
+    books,
+  }
+}
+
+export function addNewBook(typeInfo, dataForm) {
+  return async (dispatch) => {
+    let message
+    try {
+      if (typeInfo === 'addBook') {
+        dataForm.created_at = new Date().toLocaleDateString('ru-RU')
+        const { data } = await axios.post(`/books.json`, dataForm)
+        dispatch(setBook({ ...dataForm, id: data.name }))
+        message = 'Книга добавлена успешно'
+      } else {
+        const id = dataForm.id
+        delete dataForm.id
+        await axios.put(`/books/${id}.json`, dataForm)
+        dispatch(loadBooks())
+        message = 'Книга отредактирована успешно'
+      }
+      dispatch(closeAddEditModal())
+      dispatch(showShackbars(message, 'success'))
+    } catch (error) {
+      dispatch(showShackbars(error, 'error'))
+    }
+  }
+}
+
+const setBook = (newBook) => {
+  return {
+    type: SET_NEW_BOOK,
+    newBook,
+  }
+}
+
+export function editBook(id) {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`/books/${id}.json`)
+      data.id = id
+      dispatch(setDataForEditBook(data))
+      dispatch(openModal('editBook'))
+    } catch (error) {
+      dispatch(showShackbars(error, 'error'))
+    }
+  }
+}
+
+export function setDataForEditBook(dataForEditBook) {
+  return {
+    type: SET_DATA_FOR_EDIT_BOOK,
+    dataForEditBook,
   }
 }

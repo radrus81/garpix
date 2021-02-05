@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const FieldAuthor = ({ input }) => {
+const FieldAuthor = ({ input, authors }) => {
   const classes = useStyles()
   return (
     <FormControl variant="outlined" className={classes.formControl}>
@@ -25,15 +25,20 @@ const FieldAuthor = ({ input }) => {
         }}
         onChange={input.onChange}
       >
-        <option value={1}>Фримен Эрик </option>
-        <option value={2}>Браун Этан</option>
+        {authors.map((author) => {
+          return (
+            <option value={author.id} key={author.id}>
+              {author.family} {author.name}
+            </option>
+          )
+        })}
       </Select>
     </FormControl>
   )
 }
 
-const SelectAuthor = () => {
-  return <Field component={FieldAuthor} name="author_id" />
+const SelectAuthor = ({ authors }) => {
+  return <Field component={FieldAuthor} name="author_id" authors={authors} />
 }
 
 export default SelectAuthor

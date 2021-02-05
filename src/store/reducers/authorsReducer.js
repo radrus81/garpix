@@ -12,6 +12,11 @@ const initialState = {
       family: 'Браун',
       name: 'Этан',
     },
+    {
+      id: 3,
+      family: 'Мухамедов',
+      name: 'Руслан',
+    },
   ],
 }
 

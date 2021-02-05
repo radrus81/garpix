@@ -5,15 +5,15 @@ const BooksStyles = makeStyles((theme) => ({
     margin: theme.spacing(2),
   },
   container: {
-    maxHeight: 440,
+    maxHeight: '100%',
     marginTop: theme.spacing(2),
   },
   button: {
     margin: theme.spacing(1),
   },
   media: {
-    height: 140,
-    width: 100,
+    height: 110,
+    width: 90,
     margin: '0 auto',
   },
 }))

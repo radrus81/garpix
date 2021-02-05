@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
   Paper,
   Table,
@@ -13,26 +13,27 @@ import TableHeader from './TableHeader'
 import useStyles from './BooksStyles'
 import columns from './Columns'
 import ActiveButtons from './ActiveButtons'
-import { getListBooks } from '../../store/actions/actionBooks'
 import AddButton from '../ui/AddButton'
 
-const rows = [
-  {
-    active: 1,
-    title: 'Чистый код Чистый код Чистый код',
-    family_author: 'Мухамедов',
-    name_author: 'Руслан',
-    created_at: '04.02.2021',
-    year: '2015',
-    image:
-      'https://cdn.pixabay.com/photo/2017/01/27/12/53/books-2012936_1280.jpg',
-  },
-]
-
-const Books = ({ openModal }) => {
-  useEffect(() => {
-    getListBooks()
-  }, [])
+const Books = ({ books, authors, openModal, editBook }) => {
+  let newBooks = []
+  if (books.length && authors.length) {
+    //этот блок при нормальном  бэке не нужно было бы
+    newBooks = books.map((book) => {
+      let author = authors.find((author) => author.id == book.author_id)
+      return {
+        active: book.id,
+        created_at: book.created_at,
+        family_author: author.family,
+        name_author: author.name,
+        title: book.title,
+        year: book.year,
+        image: book.image
+          ? book.image
+          : 'https://yt3.ggpht.com/a/AATXAJxsZsH6uN81a6jbEevYqx5XJS-ePXZg0KLSQQCT=s900-c-k-c0xffffffff-no-rj-mo',
+      }
+    })
+  }
 
   const classes = useStyles()
   const [page, setPage] = React.useState(0)
@@ -59,7 +60,7 @@ const Books = ({ openModal }) => {
         <Table stickyHeader aria-label="sticky table">
           <TableHeader />
           <TableBody>
-            {rows
+            {newBooks
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -74,7 +75,7 @@ const Books = ({ openModal }) => {
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.id === 'active' ? (
-                            <ActiveButtons number={value} />
+                            <ActiveButtons id={value} editBook={editBook} />
                           ) : column.id === 'image' ? (
                             <CardMedia
                               className={classes.media}
@@ -96,7 +97,7 @@ const Books = ({ openModal }) => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={newBooks.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

@@ -3,7 +3,6 @@ import { TextField } from '@material-ui/core'
 import { Field } from 'redux-form'
 
 const FieldFirstPublic = ({ input, meta: { touched, error, warning } }) => {
-  console.log(error)
   return (
     <TextField
       error={error ? true : false}

@@ -1,7 +1,6 @@
 import { SHOW_SHACKBARS, CLOSE_SHACKBARS } from './actionTypes'
 
 export function showShackbars(message, messageStyle) {
-  console.log('5555')
   return {
     type: SHOW_SHACKBARS,
     message,

@@ -5,7 +5,7 @@ import { Field } from 'redux-form'
 const FieldNameBook = ({ input, meta: { touched, error, warning } }) => {
   return (
     <TextField
-      error={error || !touched ? true : false}
+      error={error ? true : false}
       helperText={error}
       variant="outlined"
       margin="normal"
