@@ -8,6 +8,7 @@ import { CLOSE_MODAL, OPEN_MODAL } from './actionTypes'
 // }
 
 export const openModal = (typeInfo) => {
+  console.log('66666')
   return {
     type: OPEN_MODAL,
     typeInfo,

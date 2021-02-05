@@ -1,6 +1,9 @@
 import { connect } from 'react-redux'
 import SnackbarsInfo from '../components/Modals/SnackbarsInfo'
-import { closeSnackbarsInfo } from '../store/actions/actionSnackbarsInfo'
+import {
+  showSnackbarsInfo,
+  hideSnackbarsInfo,
+} from '../store/actions/actionSnackbarsInfo'
 
 const mapStateToProps = (state) => ({
   isShowSnackbarsInfo: state.shackbars.isShowSnackbarsInfo,
@@ -9,7 +12,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  closeSnackbarsInfo: () => dispatch(closeSnackbarsInfo()),
+  showSnackbarsInfo: () => dispatch(showSnackbarsInfo()),
+  hideSnackbarsInfo: () => dispatch(hideSnackbarsInfo()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SnackbarsInfo)
