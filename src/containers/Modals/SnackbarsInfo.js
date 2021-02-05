@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
-import SnackbarsInfo from '../components/Modals/SnackbarsInfo'
+import SnackbarsInfo from '../../components/Modals/SnackbarsInfo'
 import {
   showSnackbarsInfo,
   hideSnackbarsInfo,
-} from '../store/actions/actionSnackbarsInfo'
+} from '../../store/actions/actionSnackbarsInfo'
 
 const mapStateToProps = (state) => ({
   isShowSnackbarsInfo: state.shackbars.isShowSnackbarsInfo,

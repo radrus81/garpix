@@ -15,7 +15,6 @@ import columns from './Columns'
 import ActiveButtons from './ActiveButtons'
 import { getListBooks } from '../../store/actions/actionBooks'
 import AddButton from '../ui/AddButton'
-import { openModal } from '../../store/actions/actionModal'
 
 const rows = [
   {
@@ -30,7 +29,7 @@ const rows = [
   },
 ]
 
-const Books = () => {
+const Books = ({ openModal }) => {
   useEffect(() => {
     getListBooks()
   }, [])

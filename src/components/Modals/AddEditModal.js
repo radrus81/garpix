@@ -1,8 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Modal from '@material-ui/core/Modal'
-import Backdrop from '@material-ui/core/Backdrop'
-import Fade from '@material-ui/core/Fade'
+import { Modal, Backdrop, Fade } from '@material-ui/core'
+import BookFormWithRedux from '../../containers/Modals/BookForm'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -18,9 +17,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const AddEditModal = ({ isOpenAddEditModal, closeAddEditModal }) => {
+const AddEditModal = ({ isOpenAddEditModal, typeInfo, closeAddEditModal }) => {
   const classes = useStyles()
 
+  const onSubmit = (dataForm) => {
+    console.log(dataForm)
+  }
   return (
     <div>
       <Modal
@@ -35,7 +37,15 @@ const AddEditModal = ({ isOpenAddEditModal, closeAddEditModal }) => {
         }}
       >
         <Fade in={isOpenAddEditModal}>
-          <h1>12121</h1>
+          {typeInfo === 'addBook' ? (
+            <BookFormWithRedux
+              typeInfo={typeInfo}
+              closeAddEditModal={closeAddEditModal}
+              onSubmit={onSubmit}
+            />
+          ) : (
+            <h1>Нет формы пока</h1>
+          )}
         </Fade>
       </Modal>
     </div>
