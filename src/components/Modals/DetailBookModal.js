@@ -15,7 +15,9 @@ const useStyles = makeStyles({
     width: '100%',
   },
   media: {
+    width: 140,
     height: 170,
+    margin: '0 auto',
   },
 })
 
@@ -30,7 +32,11 @@ const DetailBookModal = ({ isOpen, handleCloseInfoModal, detailBook }) => {
       <DialogContent dividers>
         <CardMedia
           className={classes.media}
-          image="https://salsk.sidex.ru/images_offers/2797/2797583/dnevnik_shkolnii_space_1.jpg"
+          image={
+            detailBook.image
+              ? detailBook.image
+              : 'https://salsk.sidex.ru/images_offers/2797/2797583/dnevnik_shkolnii_space_1.jpg'
+          }
           title="Contemplative Reptile"
         />
         <CardContent className={classes.root}>
