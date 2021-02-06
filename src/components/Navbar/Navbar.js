@@ -21,13 +21,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Navbar = ({ location }) => {
+const Navbar = ({ location, sections, openDrawer }) => {
   const classes = useStyles()
-  const sections = [
-    { title: 'Главная', url: '/' },
-    { title: 'Книги', url: '/books' },
-    { title: 'Авторы', url: '/authors' },
-  ]
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -38,17 +34,15 @@ const Navbar = ({ location }) => {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            onClick={openDrawer}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             Garpix
           </Typography>
-          <Toolbar
-            component="nav"
-            variant="dense"
-            className={classes.toolbarSecondary}
-          >
+
+          <Toolbar component="nav" variant="dense">
             {sections.map(({ url, title }) => (
               <ListItem
                 button

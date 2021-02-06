@@ -6,6 +6,9 @@ const validate = (values) => {
   } else if (/^[0-9]/.test(values.title)) {
     errors.title = 'Поле может содержать только буквы'
   }
+  if (!values.author_id) {
+    errors.author_id = 'Не выбран автор'
+  }
   if (!values.year) {
     errors.year = 'Поле не заполнено'
   } else if (isNaN(Number(values.year))) {

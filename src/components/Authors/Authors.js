@@ -85,16 +85,11 @@ const Authors = ({ books, authors, openModal, editAuthor, deleteAuthor }) => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.active}
-                    >
-                      {columns.map((column) => {
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                      {columns.map((column, index) => {
                         const value = row[column.id]
                         return (
-                          <TableCell key={column.id} align={column.align}>
+                          <TableCell key={row.id + index} align={column.align}>
                             {column.id === 'active' ? (
                               <ActiveButtons
                                 id={row.id}

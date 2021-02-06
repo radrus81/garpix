@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Modal, Backdrop, Fade } from '@material-ui/core'
+import { Modal, Backdrop, Fade, Box } from '@material-ui/core'
 import BookFormWithRedux from '../../containers/Modals/BookForm'
 import AuthorFormWithRedux from '../../containers/Modals/AuthorForm'
 
@@ -35,7 +35,7 @@ const AddEditModal = ({
     }
   }
   return (
-    <div>
+    <Box>
       <Modal
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
@@ -47,23 +47,27 @@ const AddEditModal = ({
           timeout: 500,
         }}
       >
-        <Fade in={isOpenAddEditModal}>
-          {typeInfo === 'addBook' || typeInfo === 'editBook' ? (
-            <BookFormWithRedux
-              typeInfo={typeInfo}
-              closeAddEditModal={closeAddEditModal}
-              onSubmit={onSubmit}
-            />
-          ) : (
-            <AuthorFormWithRedux
-              typeInfo={typeInfo}
-              closeAddEditModal={closeAddEditModal}
-              onSubmit={onSubmit}
-            />
-          )}
-        </Fade>
+        {isOpenAddEditModal ? (
+          <Fade>
+            {typeInfo === 'addBook' || typeInfo === 'editBook' ? (
+              <BookFormWithRedux
+                typeInfo={typeInfo}
+                closeAddEditModal={closeAddEditModal}
+                onSubmit={onSubmit}
+              />
+            ) : (
+              <AuthorFormWithRedux
+                typeInfo={typeInfo}
+                closeAddEditModal={closeAddEditModal}
+                onSubmit={onSubmit}
+              />
+            )}
+          </Fade>
+        ) : (
+          <Fade></Fade>
+        )}
       </Modal>
-    </div>
+    </Box>
   )
 }
 

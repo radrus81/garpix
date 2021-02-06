@@ -7,7 +7,7 @@ export const openModal = (typeInfo) => {
     if (typeInfo === 'addBook') {
       const initialValues = {
         title: '',
-        author_id: 1,
+        author_id: '',
         year: null,
         image: null,
       }
