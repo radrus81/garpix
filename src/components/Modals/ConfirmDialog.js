@@ -15,7 +15,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ConfirmDialog = ({ id, isOpen, message, handleOk, handleCancel }) => {
+const ConfirmDialog = ({
+  id,
+  isOpen,
+  isRemove,
+  message,
+  handleOk,
+  handleCancel,
+}) => {
   const classes = useStyles()
 
   return (
@@ -38,13 +45,15 @@ const ConfirmDialog = ({ id, isOpen, message, handleOk, handleCancel }) => {
           >
             Отмена
           </Button>
-          <Button
-            onClick={() => handleOk(id)}
-            variant="contained"
-            color="secondary"
-          >
-            Удалить
-          </Button>
+          {isRemove ? (
+            <Button
+              onClick={() => handleOk(id)}
+              variant="contained"
+              color="secondary"
+            >
+              Удалить
+            </Button>
+          ) : null}
         </DialogActions>
       </Dialog>
     </Box>

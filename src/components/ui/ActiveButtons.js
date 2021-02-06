@@ -4,9 +4,9 @@ import IconButton from '@material-ui/core/IconButton'
 
 const ActiveButtons = ({
   id,
-  editBook,
+  editRecord,
   showConfirmModal,
-  showDetailBookModal,
+  showDetailModal,
 }) => {
   return (
     <>
@@ -15,7 +15,7 @@ const ActiveButtons = ({
         aria-label="expand row"
         size="small"
         onClick={() => {
-          editBook(id)
+          editRecord(id)
         }}
       >
         <Create />
@@ -33,11 +33,11 @@ const ActiveButtons = ({
       </IconButton>
       <IconButton
         color="primary"
-        title="Просмотр книги"
+        title="Просмотр"
         aria-label="expand row"
         size="small"
         onClick={() => {
-          showDetailBookModal(id)
+          showDetailModal(id)
         }}
       >
         <FindInPage />

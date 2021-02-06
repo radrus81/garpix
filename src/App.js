@@ -5,12 +5,14 @@ import Navbar from './components/Navbar/Navbar'
 import Routes from './routes/Routes'
 import AddEditModal from './containers/Modals/AddEditModal'
 import SnackbarsInfo from './containers/SnackbarsInfo'
+import { loadAuthors } from './store/actions/actionAuthor'
 import { loadBooks } from './store/actions/actionBooks'
 
-const App = ({ loadBooks }) => {
+const App = ({ loadBooks, loadAuthors }) => {
   useEffect(() => {
+    loadAuthors()
     loadBooks()
-  }, [loadBooks])
+  }, [loadAuthors, loadBooks])
 
   return (
     <BrowserRouter>
@@ -23,6 +25,7 @@ const App = ({ loadBooks }) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  loadAuthors: () => dispatch(loadAuthors()),
   loadBooks: () => dispatch(loadBooks()),
 })
 

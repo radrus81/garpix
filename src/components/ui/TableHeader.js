@@ -1,8 +1,7 @@
 import React from 'react'
 import { TableCell, TableHead, TableRow } from '@material-ui/core'
-import columns from './Columns'
 
-const TableHeader = () => {
+const TableHeader = ({ columns }) => {
   return (
     <TableHead>
       <TableRow>

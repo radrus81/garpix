@@ -5,12 +5,7 @@ import {
 } from '../actions/actionTypes'
 
 const initialState = {
-  initialValues: {
-    title: '',
-    author_id: 1,
-    year: null,
-    image: null,
-  },
+  initialValues: {},
   books: [],
 }
 

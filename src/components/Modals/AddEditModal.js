@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Modal, Backdrop, Fade } from '@material-ui/core'
 import BookFormWithRedux from '../../containers/Modals/BookForm'
+import AuthorFormWithRedux from '../../containers/Modals/AuthorForm'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -22,11 +23,16 @@ const AddEditModal = ({
   typeInfo,
   closeAddEditModal,
   addNewBook,
+  addNewAuthor,
 }) => {
   const classes = useStyles()
 
   const onSubmit = (dataForm) => {
-    addNewBook(typeInfo, dataForm)
+    if (typeInfo === 'addBook' || typeInfo === 'editBook') {
+      addNewBook(typeInfo, dataForm)
+    } else {
+      addNewAuthor(typeInfo, dataForm)
+    }
   }
   return (
     <div>
@@ -49,7 +55,11 @@ const AddEditModal = ({
               onSubmit={onSubmit}
             />
           ) : (
-            <h1>Нет формы пока</h1>
+            <AuthorFormWithRedux
+              typeInfo={typeInfo}
+              closeAddEditModal={closeAddEditModal}
+              onSubmit={onSubmit}
+            />
           )}
         </Fade>
       </Modal>

@@ -9,10 +9,10 @@ import {
   TableRow,
   CardMedia,
 } from '@material-ui/core/'
-import TableHeader from './TableHeader'
+import TableHeader from '../ui/TableHeader'
 import useStyles from './BooksStyles'
 import columns from './Columns'
-import ActiveButtons from './ActiveButtons'
+import ActiveButtons from '../ui/ActiveButtons'
 import AddButton from '../ui/AddButton'
 import ContirmDialog from '../Modals/ConfirmDialog'
 import DetailBookModal from '../Modals/DetailBookModal'
@@ -22,7 +22,7 @@ const Books = ({ books, authors, openModal, editBook, deleteBook }) => {
   if (books.length && authors.length) {
     //этот блок при нормальном  бэке не нужен был бы
     newBooks = books.map((book) => {
-      let author = authors.find((author) => author.id == book.author_id)
+      let author = authors.find((author) => author.id === book.author_id)
       return {
         active: book.id,
         created_at: book.created_at,
@@ -75,15 +75,70 @@ const Books = ({ books, authors, openModal, editBook, deleteBook }) => {
   }
 
   return (
-    <Paper className={classes.root}>
-      <AddButton
-        titleBtn="Добавить книгу"
-        style={classes.button}
-        typeInfo="addBook"
-        openModal={openModal}
-      />
+    <>
+      <Paper className={classes.root}>
+        <AddButton
+          titleBtn="Добавить книгу"
+          style={classes.button}
+          typeInfo="addBook"
+          openModal={openModal}
+        />
+        <TableContainer className={classes.container}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHeader columns={columns} />
+            <TableBody>
+              {newBooks
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => {
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.active}
+                    >
+                      {columns.map((column) => {
+                        const value = row[column.id]
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.id === 'active' ? (
+                              <ActiveButtons
+                                id={value}
+                                editRecord={editBook}
+                                showConfirmModal={showConfirmModal}
+                                showDetailModal={showDetailBookModal}
+                              />
+                            ) : column.id === 'image' ? (
+                              <CardMedia
+                                className={classes.media}
+                                image={value}
+                                title="Contemplative Reptile"
+                              />
+                            ) : (
+                              value
+                            )}
+                          </TableCell>
+                        )
+                      })}
+                    </TableRow>
+                  )
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={newBooks.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </Paper>
       <ContirmDialog
         isOpen={isOpen}
+        isRemove={true}
         message={message}
         handleOk={() => handleOkDelete()}
         handleCancel={() => {
@@ -97,59 +152,7 @@ const Books = ({ books, authors, openModal, editBook, deleteBook }) => {
         }}
         detailBook={detailBook}
       />
-      <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHeader />
-          <TableBody>
-            {newBooks
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.active}
-                  >
-                    {columns.map((column) => {
-                      const value = row[column.id]
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.id === 'active' ? (
-                            <ActiveButtons
-                              id={value}
-                              editBook={editBook}
-                              showConfirmModal={showConfirmModal}
-                              showDetailBookModal={showDetailBookModal}
-                            />
-                          ) : column.id === 'image' ? (
-                            <CardMedia
-                              className={classes.media}
-                              image={value}
-                              title="Contemplative Reptile"
-                            />
-                          ) : (
-                            value
-                          )}
-                        </TableCell>
-                      )
-                    })}
-                  </TableRow>
-                )
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={newBooks.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-    </Paper>
+    </>
   )
 }
 

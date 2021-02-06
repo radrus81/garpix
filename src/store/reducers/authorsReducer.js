@@ -1,27 +1,33 @@
-// import { OPEN_MODAL, CLOSE_MODAL } from '../actions/actionTypes'
+import {
+  SET_AUTHORS,
+  SET_NEW_AUTHOR,
+  SET_DATA_FOR_EDIT_AUTHOR,
+} from '../actions/actionTypes'
 
 const initialState = {
-  authors: [
-    {
-      id: 1,
-      family: 'Фримен',
-      name: 'Эрик',
-    },
-    {
-      id: 2,
-      family: 'Браун',
-      name: 'Этан',
-    },
-    {
-      id: 3,
-      family: 'Мухамедов',
-      name: 'Руслан',
-    },
-  ],
+  initialValues: {},
+  authors: [],
 }
 
 export default function modalReducer(state = initialState, action) {
   switch (action.type) {
+    case SET_AUTHORS:
+      return {
+        ...state,
+        authors: action.authors,
+      }
+    case SET_NEW_AUTHOR:
+      const cloneAutors = JSON.parse(JSON.stringify(state.authors))
+      cloneAutors.push(action.newAuthor)
+      return {
+        ...state,
+        authors: cloneAutors,
+      }
+    case SET_DATA_FOR_EDIT_AUTHOR:
+      return {
+        ...state,
+        initialValues: action.dataForEditAuthor,
+      }
     default:
       return state
   }
