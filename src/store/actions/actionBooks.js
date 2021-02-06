@@ -75,3 +75,15 @@ export function setDataForEditBook(dataForEditBook) {
     dataForEditBook,
   }
 }
+
+export function deleteBook(id) {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`/books/${id}.json`)
+      dispatch(loadBooks())
+      dispatch(showShackbars('Книга удалена успешно', 'success'))
+    } catch (error) {
+      dispatch(showShackbars(error, 'error'))
+    }
+  }
+}

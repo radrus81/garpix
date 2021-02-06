@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Paper,
   Table,
@@ -14,11 +14,13 @@ import useStyles from './BooksStyles'
 import columns from './Columns'
 import ActiveButtons from './ActiveButtons'
 import AddButton from '../ui/AddButton'
+import ContirmDialog from '../Modals/ConfirmDialog'
+import DetailBookModal from '../Modals/DetailBookModal'
 
-const Books = ({ books, authors, openModal, editBook }) => {
+const Books = ({ books, authors, openModal, editBook, deleteBook }) => {
   let newBooks = []
   if (books.length && authors.length) {
-    //этот блок при нормальном  бэке не нужно было бы
+    //этот блок при нормальном  бэке не нужен был бы
     newBooks = books.map((book) => {
       let author = authors.find((author) => author.id == book.author_id)
       return {
@@ -36,8 +38,15 @@ const Books = ({ books, authors, openModal, editBook }) => {
   }
 
   const classes = useStyles()
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+
+  const [isOpen, setConfirmModal] = useState(false)
+  const [message, setMessage] = useState('')
+  const [idMemory, setIdMemory] = useState(null)
+
+  const [isOpenDetailBookModal, setIsOpenDetailBookModal] = useState(false)
+  const [detailBook, setDetailBook] = useState({})
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -48,6 +57,23 @@ const Books = ({ books, authors, openModal, editBook }) => {
     setPage(0)
   }
 
+  const showConfirmModal = (id) => {
+    setIdMemory(id)
+    const { title } = books.find((book) => book.id === id)
+    setMessage(`Вы действительно хотите удалить книгу "${title}"?`)
+    setConfirmModal(true)
+  }
+
+  const handleOkDelete = async () => {
+    await deleteBook(idMemory)
+    setConfirmModal(false)
+  }
+  const showDetailBookModal = (id) => {
+    const detailBook = newBooks.find((book) => book.active === id)
+    setDetailBook(detailBook)
+    setIsOpenDetailBookModal(true)
+  }
+
   return (
     <Paper className={classes.root}>
       <AddButton
@@ -55,6 +81,21 @@ const Books = ({ books, authors, openModal, editBook }) => {
         style={classes.button}
         typeInfo="addBook"
         openModal={openModal}
+      />
+      <ContirmDialog
+        isOpen={isOpen}
+        message={message}
+        handleOk={() => handleOkDelete()}
+        handleCancel={() => {
+          setConfirmModal(false)
+        }}
+      />
+      <DetailBookModal
+        isOpen={isOpenDetailBookModal}
+        handleCloseInfoModal={() => {
+          setIsOpenDetailBookModal(false)
+        }}
+        detailBook={detailBook}
       />
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -75,7 +116,12 @@ const Books = ({ books, authors, openModal, editBook }) => {
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.id === 'active' ? (
-                            <ActiveButtons id={value} editBook={editBook} />
+                            <ActiveButtons
+                              id={value}
+                              editBook={editBook}
+                              showConfirmModal={showConfirmModal}
+                              showDetailBookModal={showDetailBookModal}
+                            />
                           ) : column.id === 'image' ? (
                             <CardMedia
                               className={classes.media}
