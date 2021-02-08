@@ -49,7 +49,11 @@ const Navbar = ({ location, sections, openDrawer }) => {
                 key={title}
                 component={NavLink}
                 to={url}
-                selected={location.pathname === url ? true : false}
+                // selected={location.pathname === url ? true : false}
+                exact
+                activeStyle={{
+                  textDecoration: 'underline',
+                }}
               >
                 <ListItemText primary={title} />
               </ListItem>
