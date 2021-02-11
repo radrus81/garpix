@@ -31,7 +31,22 @@ const setAuthorsToState = (authors) => {
 }
 
 export function addNewAuthor(typeInfo, dataForm) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { authors } = getState()
+    //тут конечно нужно сделать запрос на сервер и узнать есть ли такой автор, но ради простоты сделал тут
+    const isAuthor = authors.authors.find(
+      (author) =>
+        author.family === dataForm.family && author.name === dataForm.name
+    )
+    if (isAuthor) {
+      dispatch(
+        showShackbars(
+          `Автор ${dataForm.family} ${dataForm.name} уже есть в базе`,
+          'error'
+        )
+      )
+      return
+    }
     let message
     try {
       if (typeInfo === 'addAuthor') {
