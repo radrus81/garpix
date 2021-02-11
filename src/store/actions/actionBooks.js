@@ -26,7 +26,16 @@ const setBooksToState = (books) => {
 }
 
 export function addNewBook(typeInfo, dataForm) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { books } = getState()
+    const isBook = books.books.find((book) => book.title === dataForm.title)
+    if (isBook) {
+      dispatch(
+        showShackbars(`Книга ${dataForm.title} уже есть в библиотеке`, 'error')
+      )
+      return
+    }
+
     let message
     try {
       if (typeInfo === 'addBook') {
